@@ -1,0 +1,178 @@
+{
+  "name": "Customer",
+  "base": "User",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": false
+  },
+  "mixins": {
+    "TimeStamp": true
+  },
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "mobileNumber": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string",
+      "required": false
+    },
+    "password": {
+      "type": "string",
+      "required": true
+    },
+    "balance": {
+      "type": "number",
+      "default": 0
+    },
+    "redeem": {
+      "type": "number",
+      "default": 0
+    },
+    "referralBonus": {
+      "type": "number",
+      "default": 0
+    },
+    "bonus": {
+      "type": "number",
+      "default": 0
+    },
+    "referralCode": {
+      "type": "string"
+    },
+    "isVerified": {
+      "type": "boolean",
+      "default": false
+    },
+    "otp": {
+      "type": "string"
+    },
+    "level1": {
+      "type": "string",
+      "default": null
+    },
+    "level2": {
+      "type": "string",
+      "default": null
+    },
+    "level3": {
+      "type": "string",
+      "default": null
+    },
+    "level4": {
+      "type": "string",
+      "default": null
+    },
+    "level5": {
+      "type": "string",
+      "default": null
+    },
+    "levelBalance1": {
+      "type": "number",
+      "default": 0
+    },
+    "levelBalance2": {
+      "type": "number",
+      "default": 0
+    },
+    "levelBalance3": {
+      "type": "number",
+      "default": 0
+    },
+    "levelBalance4": {
+      "type": "number",
+      "default": 0
+    },
+    "levelBalance5": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "boolean",
+      "default": true
+    },
+    "statusMassage": {
+      "type": "string"
+    },
+    "appVersion": {
+      "type": "string"
+    },
+    "ip": {
+      "type": "string"
+    },
+    "lastLogin": {
+      "type": "date",
+      "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "accessTokens": {
+      "type": "hasMany",
+      "model": "Token",
+      "foreignKey": "userId",
+      "options": {
+        "disableInclude": true
+      }
+    },
+    "devices": {
+      "type": "hasMany",
+      "model": "userDevice",
+      "foreignKey": "userId"
+    },
+    "transactionhistory": {
+      "type": "hasMany",
+      "model": "transactionHistory",
+      "foreignKey": "userId"
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "administrator",
+      "permission": "ALLOW",
+      "property": "*"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "registration"
+    }
+  ],
+  "methods": {
+    "registration": {
+      "accepts": [
+        {
+          "arg": "userObj",
+          "type": "Object"
+        },
+        {
+          "arg": "options",
+          "type": "object",
+          "http": "optionsFromRequest"
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": {
+        "arg": "user",
+        "type": "Object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/registration"
+      }
+    }
+  }
+}

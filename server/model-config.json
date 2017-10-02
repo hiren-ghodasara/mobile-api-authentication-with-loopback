@@ -1,0 +1,56 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins",
+      "../node_modules/loopback-ds-timestamp-mixin"
+    ]
+  },
+  "User": {
+    "dataSource": "mongoDB",
+    "public": false
+  },
+  "AccessToken": {
+    "dataSource": "mongoDB",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "mongoDB",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "mongoDB",
+    "public": false,
+    "options": {
+      "strictObjectIDCoercion": true
+    }
+  },
+  "Role": {
+    "dataSource": "mongoDB",
+    "public": true
+  },
+  "Customer": {
+    "dataSource": "mongoDB",
+    "public": true
+  },
+  "Token": {
+    "dataSource": "mongoDB",
+    "public": true
+  },
+  "userDevice": {
+    "dataSource": "mongoDB",
+    "public": true
+  },
+  "transactionHistory": {
+    "dataSource": "mongoDB",
+    "public": true
+  }
+}

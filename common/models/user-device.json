@@ -1,0 +1,36 @@
+{
+  "name": "userDevice",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": false
+  },
+  "mixins": {
+    "TimeStamp": true
+  },
+  "properties": {
+    "mobileNumber": {
+      "type": "string"
+    },
+    "userId": {
+      "type": "string",
+      "required": true
+    },
+    "deviceId": {
+      "type": "string"
+    },
+    "deviceInfo": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "Customer": {
+      "type": "belongsTo",
+      "model": "Customer",
+      "foreignKey": "userId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

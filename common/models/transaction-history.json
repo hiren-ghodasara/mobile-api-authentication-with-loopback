@@ -1,0 +1,60 @@
+{
+  "name": "transactionHistory",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": false
+  },
+  "mixins": {
+    "TimeStamp": true
+  },
+  "properties": {
+    "userId": {
+      "type": "string",
+      "required": true
+    },
+    "amount": {
+      "type": "number",
+      "required": true
+    },
+    "type": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "Customer": {
+      "type": "belongsTo",
+      "model": "Customer",
+      "foreignKey": "userId"
+    }
+  },
+  "acls": [],
+  "methods": {
+    "updateBalance": {
+      "accepts": [
+        {
+          "arg": "userId",
+          "type": "string"
+        },
+        {
+          "arg": "amount",
+          "type": "number"
+        },
+        {
+          "arg": "type",
+          "type": "number"
+        }
+      ],
+      "returns": {
+        "arg": "data",
+        "type": "Object"
+      },
+      "http": {
+        "verb": "post",
+        "path": "/update-balance"
+      }
+    }
+  }
+}

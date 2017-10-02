@@ -1,0 +1,40 @@
+{
+  "name": "MobileApi",
+  "version": "1.0.0",
+  "main": "server/server.js",
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "start": "node .",
+    "posttest": "npm run lint && nsp check"
+  },
+  "dependencies": {
+    "async": "^2.5.0",
+    "compression": "^1.0.3",
+    "cors": "^2.5.2",
+    "dotenv": "^4.0.0",
+    "helmet": "^1.3.0",
+    "loopback": "^3.0.0",
+    "loopback-boot": "^2.6.5",
+    "loopback-component-explorer": "^5.0.0",
+    "loopback-connector-mongodb": "^3.2.1",
+    "loopback-ds-timestamp-mixin": "^3.4.1",
+    "serve-favicon": "^2.0.1",
+    "strong-error-handler": "^2.0.0",
+    "winston": "^2.3.1",
+    "winston-daily-rotate-file": "^1.7.2"
+  },
+  "devDependencies": {
+    "eslint": "^3.17.1",
+    "eslint-config-loopback": "^8.0.0",
+    "nsp": "^2.1.0"
+  },
+  "repository": {
+    "type": "",
+    "url": ""
+  },
+  "license": "UNLICENSED",
+  "description": "MobileApi"
+}
