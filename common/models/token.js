@@ -1,5 +1,5 @@
 'use strict';
 
-module.exports = function(Token) {
+module.exports = function (Token) {
 
 };
