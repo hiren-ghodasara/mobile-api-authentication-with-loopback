@@ -1,9 +1,12 @@
 {
   "name": "Customer",
   "base": "User",
+  "ttl": 9999999,
+  "allowEternalTokens": true,
   "idInjection": true,
   "options": {
-    "validateUpsert": false
+    "validateUpsert": true,
+    "allowEternalTokens": true
   },
   "mixins": {
     "TimeStamp": true
@@ -115,7 +118,8 @@
       "model": "Token",
       "foreignKey": "userId",
       "options": {
-        "disableInclude": true
+        "disableInclude": true,
+        "allowEternalTokens": true
       }
     },
     "devices": {

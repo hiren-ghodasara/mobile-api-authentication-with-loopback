@@ -4,8 +4,9 @@ var app = require('../../server/server.js');
 
 module.exports = function (Transactionhistory) {
 
-    Transactionhistory.updateBalance = function (userId, amount, type, cb) {
+    Transactionhistory.updateBalance = function (amount, type, options, cb) {
         var CustomerModel = Transactionhistory.app.models.Customer;
+        var userId = options.accessToken.userId;
         CustomerModel.findById(userId, function (err, userRes) {
             if (err !== null) {
                 logger.error('updateBalance Find User error', JSON.stringify(err));

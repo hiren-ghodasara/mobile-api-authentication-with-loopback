@@ -4,11 +4,13 @@ var logger = require('../helpers/appLogger');
 var async = require('async');
 
 module.exports = function (Customer) {
+
     //save after login method 
     Customer.afterRemote('login', function (context, remoteMethodOutput, next) {
         if (remoteMethodOutput.userId) {
             var deviceId = context.args.credentials.deviceId || null;
             var deviceInfo = context.args.credentials.deviceInfo || null;
+            //Customer.app.models.Token.destroyAll({});
             Customer.findById(remoteMethodOutput.userId, function (err, userRes) {
                 if (err !== null) {
                     logger.error('Login after hook error', JSON.stringify(err));
@@ -31,7 +33,7 @@ module.exports = function (Customer) {
                             logger.debug('Login Save after hook is done', JSON.stringify(instance.userId));
                         }
                     })
-                    console.log('userRes', userRes);
+                    //console.log('userRes', userRes);
                 }
             });
         }
@@ -57,19 +59,18 @@ module.exports = function (Customer) {
             } else {
                 if (!userRes) {
                     //registre new User
-
-                    Object.assign(userObj, { otp: oneTimePass }, { ip: ip });
+                    Object.assign(userObj, { otp: oneTimePass }, { ip: ip }, { username: userObj.mobileNumber });
                     //return cb(null, userObj);
                     async.waterfall([
                         function (callback) {
-                            console.log('First Step --> ');
+                            //console.log('First Step --> ');
                             makeReferralCode(function (code) {
                                 Object.assign(userObj, { referralCode: code });
                                 callback(null, userObj);
                             });
                         },
                         function (userObj, callback) {
-                            console.log('Second Step --> ', userObj);
+                            //console.log('Second Step --> ', userObj);
                             if (userObj.invitationCode) {
                                 var filter = { where: { referralCode: userObj.invitationCode } };
                                 Customer.findOne(filter, function (err, referralUser) {
@@ -106,20 +107,33 @@ module.exports = function (Customer) {
 
                         },
                         function (userObj, callback) {
-                            console.log('Second three --> ', userObj);
+                            //console.log('Second three --> ', userObj);
                             Customer.create(userObj, function (err, cretedUserObj) {
                                 if (err !== null) {
                                     callback(err);
                                 }
                                 callback(null, cretedUserObj);
                             });
+                        },
+                        function (userObj, callback) {
+                            //console.log('Second four --> ', userObj);
+                            //user.createAccessToken([ttl|data], [options], cb)
+                            userObj.createAccessToken({
+                                ttl: -1 // https://github.com/strongloop/loopback/pull/1797
+                            }, function (err, obj) {
+                                if (!(err !== null)) {
+                                    Object.assign(userObj, { accessToken: obj.id });
+                                }
+                                callback(null, userObj);
+                            });
                         }
                     ], function (err, finalUserObj) {
+                        //console.log('finalUserObj', finalUserObj);
                         if (err !== null) {
                             logger.error('Customer registration error', JSON.stringify(err));
                             return cb(err);
                         }
-                        console.log('Main Callback --> ' + finalUserObj);
+                        //console.log('Main Callback --> ', finalUserObj);
                         if (deviceId && deviceInfo) {
                             finalUserObj.devices.create({
                                 mobileNumber: finalUserObj.mobileNumber,
@@ -132,15 +146,17 @@ module.exports = function (Customer) {
                                 console.log('devicesRes:', devicesRes);
                             });
                         }
+                        finalUserObj.isSuccess = 1;
+
                         return cb(null, finalUserObj);
                     });
                 }
                 else {
                     logger.error('User Already register', JSON.stringify(err));
-                    var err = new Error();
-                    err.status = 400;
-                    err.message = "User Already register";
-                    return cb(err);
+                    var res = {};
+                    res.isSuccess = 0;
+                    res.message = "User Already register";
+                    return cb(null, res);
                 }
 
             }

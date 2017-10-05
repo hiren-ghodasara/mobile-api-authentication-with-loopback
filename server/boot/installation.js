@@ -20,7 +20,7 @@ module.exports = function (app) {
                 {
                     username: '9723227593',
                     email: 'hirenpatel56377@gmail.com',
-                    password: 'admin@dipak',
+                    password: 'demo@123',
                     name: 'Hiren Ghodasara',
                     mobileNumber: '9723227593',
                 },
